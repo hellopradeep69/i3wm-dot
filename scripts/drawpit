@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# CMD=("sh" -c "gcc \"$FILE\" -o \"$BASENAME\" -lncurses && ./\"$BASENAME\"")
+gcc ~/Drawpit/main.c -o main -lncurses && ~/Drawpit/main

@@ -12,7 +12,7 @@ dunst &
 # Start compositor
 picom &
 
-feh --bg-fill ~/Pictures/Wallpapers/space.jpg &
+# feh --bg-fill ~/Pictures/Wallpapers/space.jpg &
 # nitrogen --restore &
 
 # Custom scripts
@@ -20,4 +20,4 @@ feh --bg-fill ~/Pictures/Wallpapers/space.jpg &
 ~/.local/bin/battery-notify2.sh &
 
 # Polybar
-$HOME/.config/polybar/launch.sh &
+# $HOME/.config/polybar/launch.sh &

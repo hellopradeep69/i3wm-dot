@@ -1,0 +1,47 @@
+#!/bin/bash
+
+# === Ask for URL ===
+read -p "🎯 Paste the YouTube URL: " URL
+
+# === Check if empty ===
+if [[ -z "$URL" ]]; then
+  echo "❌ No URL entered!"
+  exit 1
+fi
+
+# === Choose type ===
+echo "📥 What do you want to download?"
+echo "1. Video + Audio"
+echo "2. Audio Only"
+read -p "Choose 1 or 2: " TYPE
+
+if [[ "$TYPE" == "1" ]]; then
+    # === Ask video quality ===
+    echo "💎 What quality do you want?"
+    echo "1. 1080p"
+    echo "2. 720p"
+    echo "3. 480p"
+    echo "4. 360p"
+    read -p "Choose 1-4: " QUALITY
+
+    case "$QUALITY" in
+        1) HEIGHT=1080 ;;
+        2) HEIGHT=720 ;;
+        3) HEIGHT=480 ;;
+        4) HEIGHT=360 ;;
+        *) echo "❌ Invalid choice"; exit 1 ;;
+    esac
+
+    echo "⏬ Downloading video + audio in ${HEIGHT}p..."
+    yt-dlp -f "bestvideo[height=$HEIGHT]+bestaudio/best[height=$HEIGHT]" -o "%(title)s.%(ext)s" "$URL"
+
+elif [[ "$TYPE" == "2" ]]; then
+    echo "🎵 Downloading audio only (.m4a)..."
+    yt-dlp -x --audio-format m4a -o "%(title)s.%(ext)s" "$URL"
+else
+    echo "❌ Invalid option"
+    exit 1
+fi
+
+echo "✅ Done!"
+

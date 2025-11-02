@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Show a simple power menu with Dracula lock
+action=$(printf "Lock\nSuspend\nLogout\nReboot\nPoweroff" | rofi -dmenu -p "Power Menu")
+
+# Detect current window manager
+WM=$(echo "$XDG_CURRENT_DESKTOP $DESKTOP_SESSION $XDG_SESSION_DESKTOP $WINDOW_MANAGER" | tr '[:upper:]' '[:lower:]')
+
+case "$action" in
+Lock)
+    i3lock -c 282a36
+    ;;
+Suspend)
+    i3lock -c 282a36 && systemctl suspend
+    ;;
+Logout)
+    if [[ $WM == *i3* ]]; then
+        i3-msg exit
+    elif [[ $WM == *bspwm* ]]; then
+        bspc quit
+    elif [[ $WM == *qtile* ]]; then
+        qtile cmd-obj -o root -f shutdown
+    else
+        echo "Unknown WM. Cannot logout." | rofi -dmenu -p "Error"
+    fi
+    ;;
+Reboot)
+    systemctl reboot
+    ;;
+Poweroff)
+    systemctl poweroff
+    ;;
+esac

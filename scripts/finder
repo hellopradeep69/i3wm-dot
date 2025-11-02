@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# finder.sh - fzf file finder with preview and smart opener (exclude hidden dirs/files)
+
+# Find all files (exclude hidden), strip leading './'
+file=$(find . -type f -not -path '*/.*' -printf '%P\n' 2>/dev/null | fzf \
+    --bind "j:down,k:up,q:abort" \
+    --preview "batcat --style=numbers --color=always --line-range :50 {}")
+
+# Exit if nothing chosen
+[ -z "$file" ] && exit 0
+
+# Detect MIME type
+mime=$(file --mime-type -b "$file")
+
+# Open based on MIME type
+case "$mime" in
+text/*)
+    ${EDITOR:-nvim} "$file"
+    ;;
+image/* | application/pdf)
+    xdg-open "$file" >/dev/null 2>&1 &
+    ;;
+video/* | audio/*)
+    nohup vlc "$file" >/dev/null 2>&1 &
+    ;;
+*)
+    xdg-open "$file" >/dev/null 2>&1 &
+    ;;
+esac

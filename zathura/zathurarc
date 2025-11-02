@@ -1,0 +1,18 @@
+# zathura config for personal use
+
+include /home/hellopradeep/.config/zathura/druvbox.arc
+
+# configs
+set zoom-min 5
+set guioptions ""
+set recolor true
+set scroll-step 100 
+set selection-clipboard clipboard
+
+# keymap
+map t recolor
+map f toggle_fullscreen
+
+# full screen keymap
+map [fullscreen] f toggle_fullscreen
+map [fullscreen] t recolor

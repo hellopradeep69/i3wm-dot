@@ -1,0 +1,253 @@
+#!/usr/bin/env bash
+# tmux-fzf-dashboard.sh
+# Tmux session/window selector with FZF (supports session templates, j/k navigation)
+
+# Detach if inside tmux
+# [ -n "$TMUX" ] && tmux detach
+
+# -------------------------------
+# FUNCTIONS
+# -------------------------------
+
+list_sessions() {
+    tmux list-sessions -F "#{session_name} (#{windows} windows, created: #{session_created})" 2>/dev/null
+}
+
+format_session() {
+    local line="$1"
+    local name ts date_str marker
+
+    # Get current tmux session if inside tmux
+    current_session=""
+    if [ -n "$TMUX" ]; then
+        current_session=$(tmux display-message -p '#S')
+    fi
+
+    name=$(echo "$line" | awk '{print $1}')
+    ts=$(echo "$line" | grep -oP '\d{10}')
+    date_str=$(date -d @"$ts" '+%b %d %Y %H:%M')
+
+    # Mark the current session with a star or text
+    if [ "$name" == "$current_session" ]; then
+        marker="[attached]"
+    else
+        marker=""
+    fi
+
+    # echo "$name (${line#* } created: $date_str)"
+    echo "$name (created: $date_str) $marker"
+}
+
+session_exists() {
+    tmux has-session -t "$1" 2>/dev/null
+}
+
+create_template_session() {
+    local session_name="$1"
+    local template="$2"
+
+    case "$template" in
+    suma)
+        tmux new-session -d -s "$session_name" -c "$PWD" -n "nvim"
+        tmux new-window -t "$session_name" -c "$HOME" -n "xtra"
+        tmux new-window -t "$session_name" -c "$HOME" -n "btop"
+        tmux select-window -t "$session_name:1"
+        ;;
+    project)
+        tmux new-session -d -s "$session_name" -c "$HOME" -n "nvim"
+        tmux new-window -t "$session_name" -c "$HOME" -n "html"
+        tmux new-window -t "$session_name" -c "$HOME" -n "logs"
+        tmux select-window -t "$session_name:1"
+        ;;
+    dev)
+        tmux new-session -d -s "$session_name" -c "$HOME" -n "editor"
+        tmux new-window -t "$session_name" -c "$HOME" -n "server"
+        tmux new-window -t "$session_name" -c "$HOME" -n "logs"
+        ;;
+    web)
+        tmux new-session -d -s "$session_name" -c "$HOME" -n "frontend"
+        tmux new-window -t "$session_name" -c "$HOME" -n "backend"
+        tmux new-window -t "$session_name" -c "$HOME" -n "database"
+        ;;
+    *)
+        tmux new-session -d -s "$session_name" -c "$HOME" -n "main"
+        ;;
+    esac
+}
+
+# -------------------------------
+# BUILD SESSION LIST
+# -------------------------------
+sessions=""
+existing=$(list_sessions | sort -t: -k2,2n)
+# existing=$(list_sessions)
+if [ -n "$existing" ]; then
+    while read -r line; do
+        sessions+=$(format_session "$line")$'\n'
+    done <<<"$existing"
+fi
+
+sessions+=$'\n'"[New session]"$'\n'"[Delete session]"$'\n'"[Session from Directory]"
+
+# -------------------------------
+# SELECT SESSION
+# -------------------------------
+# --height=15 \
+selected_session=$(echo -e "$sessions" | fzf \
+    --prompt="Select tmux session (q to quit): " \
+    --border \
+    --reverse \
+    --bind "j:down,k:up,q:abort" \
+    --preview 'tmux list-windows -t {1} -F "#{window_index}: #{window_name} | #{pane_current_command}"' \
+    --cycle)
+
+# Abort if nothing selected
+[ -z "$selected_session" ] && exit 0
+
+# -------------------------------
+# HANDLE SPECIAL OPTIONS
+# -------------------------------
+
+if [[ "$selected_session" == "[Session from Directory]" ]]; then
+    # Use fd if available, otherwise fallback to find
+    if command -v fd >/dev/null 2>&1; then
+        dir=$(find ~ -mindepth 1 -maxdepth 3 -type d -not -path '*/\.git*' 2>/dev/null | fzf \
+            --prompt="Select directory: " \
+            --preview 'ls --color=always {}' \
+            --preview-window=right:30%:wrap \
+            --border --reverse --bind "j:down,k:up,q:abort")
+    else
+        dir=$(fd . ~/ --type d --follow --exclude .git --max-depth 1 | fzf \
+            --prompt="Select directory: " \
+            --preview 'ls --color=always {}' \
+            --preview-window=right:30%:wrap \
+            --border --reverse --bind "j:down,k:up,q:abort")
+    fi
+
+    [ -z "$dir" ] && exit 0
+
+    # session_name=$(basename "$dir" | tr . _ | tr -cd '[:alnum:]_')
+
+    rel_path=$(realpath --relative-to="$HOME" "$dir" | sed 's|^\.\?||')
+    session_name=$(echo "$rel_path" | tr / _ | tr -cd '[:alnum:]_')
+
+    # If session already exists, attach. Else create.
+    if session_exists "$session_name"; then
+        if [ -n "$TMUX" ]; then
+            tmux switch-client -t "$session_name"
+        else
+            tmux attach-session -t "$session_name"
+        fi
+    else
+        tmux new-session -d -s "$session_name" -c "$dir" -n "main"
+        if [ -n "$TMUX" ]; then
+            tmux switch-client -t "$session_name"
+        else
+            tmux attach-session -t "$session_name"
+        fi
+    fi
+    exit 0
+fi
+
+if [[ "$selected_session" == "[New session]" ]]; then
+    session_name=$(
+        echo "" | fzf \
+            --print-query \
+            --prompt="Enter new session name(q to quit): " \
+            --border --reverse \
+            --bind "q:abort"
+    )
+    session_name=$(echo "$session_name" | head -n1) # take query part
+
+    [ -z "$session_name" ] && exit 0
+
+    # Select template
+    template=$(
+        printf "suma\nproject\ndev\nweb\ndefault" | fzf \
+            --prompt="Select session template: " \
+            --border --reverse --bind "j:down,k:up,q:abort" --cycle
+    )
+    [ -z "$template" ] && template="default"
+
+    # Create session with template
+    create_template_session "$session_name" "$template"
+
+    # Attach or switch depending on inside/outside tmux
+    if [ -n "$TMUX" ]; then
+        tmux switch-client -t "$session_name"
+    else
+        tmux attach-session -t "$session_name"
+    fi
+    exit 0
+fi
+
+if [[ "$selected_session" == "[Delete session]" ]]; then
+    while true; do
+        # List sessions with extra info for clarity
+        del_session=$(
+            tmux list-sessions -F "#{session_name} (#{windows} windows, created: #{session_created})" |
+                while read -r line; do
+                    format_session "$line"
+                done | fzf --prompt="Select session to delete (q to quit): " \
+                --border \
+                --cycle --reverse \
+                --bind "j:down,k:up,q:abort"
+        )
+        # Exit if user pressed q or nothing selected
+        [ -z "$del_session" ] && break
+
+        # Extract only the session name (first word before space)
+        del_session_name=$(echo "$del_session" | awk '{print $1}')
+
+        # Confirm deletion
+        read -rp "Are you sure you want to delete session '$del_session_name'? [y/N]: " confirm
+        # if [[ -z "$confirm" || "$confirm" =~ ^[Yyo]$ ]]; then
+        confirm=${confirm,,} # convert to lowercase
+        if [[ "$confirm" == "y" ]]; then
+            tmux kill-session -t "$del_session_name"
+            echo "Session '$del_session_name' deleted."
+        else
+            echo "Aborted deletion."
+        fi
+    done
+    exit 0
+fi
+
+# Strip ANSI codes and extract session name
+session_name=$(echo "$selected_session" | sed 's/\x1b\[[0-9;]*m//g' | awk '{print $1}')
+
+# -------------------------------
+# SELECT WINDOW
+# -------------------------------
+# comment it out if not need window OPTIONS
+# windows=$(tmux list-windows -t "$session_name" -F "#{window_index}: #{window_name}")
+# if [ -z "$windows" ]; then
+#     echo "No windows in session $session_name. Creating one..."
+#     tmux new-window -t "$session_name" -n "main"
+#     windows=$(tmux list-windows -t "$session_name" -F "#{window_index}: #{window_name}")
+# fi
+#
+# selected_window=$(
+#     echo "$windows" | fzf \
+#         --prompt="Select window (q to quit): " \
+#         \
+#         --border \
+#         --reverse \
+#         --bind "j:down,k:up,q:abort" # --height=12 \
+# )
+#
+# # Abort if nothing selected
+# [ -z "$selected_window" ] && exit 0
+#
+# window_index=$(echo "$selected_window" | cut -d':' -f1)
+# ----------------- till here
+
+# -------------------------------
+# ATTACH TO SELECTED
+# -------------------------------
+# tmux attach-session -t "$session_name" \; select-window -t "$window_index"
+if [ -n "$TMUX" ]; then
+    tmux switch-client -t "$session_name" \; select-window -t "$window_index"
+else
+    tmux attach-session -t "$session_name" \; select-window -t "$window_index"
+fi
