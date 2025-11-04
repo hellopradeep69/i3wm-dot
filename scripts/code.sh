@@ -22,28 +22,30 @@ EXT="${FILE##*.}"
 BASENAME="${FILE%.*}"
 CLASSNAME=$(basename "$BASENAME")
 
+echo " "
+echo -e "${GREEN}=== OUTPUT ${FILE} ===${RESET}"
+
 case "$EXT" in
 py)
-    CMD=("python3" "$FILE")
+    python3 "$FILE"
     ;;
 java)
-    CMD=("sh" -c "javac \"$FILE\" && java \"$CLASSNAME\"")
+    javac "$FILE" && java "$CLASSNAME"
     ;;
 c)
-    # CMD=("sh" -c "gcc \"$FILE\" -o \"$BASENAME\" && ./\"$BASENAME\"")
-    CMD=("sh" -c "gcc \"$FILE\" -o \"$BASENAME\" -lncurses && ./\"$BASENAME\"")
+    gcc "$FILE" -o "$BASENAME" && "$BASENAME"
     ;;
 cpp)
-    CMD=("sh" -c "g++ \"$FILE\" -o \"$BASENAME\" && ./\"$BASENAME\"")
+    g++ "$FILE" -o "$BASENAME" && "$BASENAME"
     ;;
 sh)
-    CMD=("bash" "$FILE")
+    bash "$FILE"
     ;;
 lua)
-    CMD=("lua" "$FILE")
+    lua "$FILE"
     ;;
 js)
-    CMD=("node" "$FILE")
+    node "$FILE"
     ;;
 *)
     echo -e "${RED}Error:${RESET} Unsupported file type: $EXT"
@@ -51,10 +53,6 @@ js)
     ;;
 esac
 
-echo " "
-echo -e "${GREEN}=== OUTPUT ${FILE} ===${RESET}"
-# Run interactively (keeps stdin open)
-"${CMD[@]}"
 EXIT_CODE=$?
 
 if [ $EXIT_CODE -ne 0 ]; then

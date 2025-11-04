@@ -34,7 +34,7 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
-exec --no-startup-id nm-applet
+# exec --no-startup-id nm-applet
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -204,6 +204,12 @@ client.background       #ffffff
 
 # Assign
 assign [class="Telegram"] 10
+assign [class="zen"] 2
+assign [class="vlc"] 4
+assign [class="dev.zed.Zed"] 3
+
+# Floating
+for_window [class="cinnamon-settings network"] floating enable
 
 #no title bar
 new_window pixel 2
@@ -242,3 +248,15 @@ bindsym $mod+p bar mode toggle
 # Toggle fullscreen
 bindsym Mod1+Return fullscreen toggle
 
+# Clipboard
+bindsym Menu exec ~/.local/bin/rofi-clipboard
+
+# Wifi
+bindsym $mod+Shift+w exec cinnamon-settings network
+
+# Scratchpad terminal
+for_window [class="scratchpad"] floating enable, move scratchpad, resize set 1200 700, move position center
+bindsym $mod+Shift+Return exec --no-startup-id alacritty --class=scratchpad
+bindsym $mod+Shift+slash move scratchpad
+bindsym $mod+slash scratchpad show
+exec --no-startup-id alacritty --class=scratchpad

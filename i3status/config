@@ -11,12 +11,12 @@ general {
         interval = 2
 }
 
+order += "memory"
 order += "read_file bat"
 order += "disk /"
 order += "volume master"
 order += "battery all"
 order += "wireless _first_"
-order += "memory"
 order += "tztime local"
 order += "read_file brightness"
 # order += "load"
@@ -33,7 +33,7 @@ ethernet _first_ {
 }
 
 battery all {
-        format = "%status %percentage %remaining %emptytime"
+        format = "%status %remaining (%emptytime %percentage)"
         format_percentage = "%.00f%s"
         integer_battery_capacity = true
         format_down = "No battery"

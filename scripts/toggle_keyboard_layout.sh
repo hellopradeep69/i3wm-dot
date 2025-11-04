@@ -5,7 +5,7 @@ current_layout=$(setxkbmap -query | awk '/layout:/ {print $2}')
 current_variant=$(setxkbmap -query | awk '/variant:/ {print $2}')
 
 # Define menu options (layout:variant format)
-options="QWERTY\nDVORAK\nCOLEMAK"
+options="QWERTY\nDVORAK\nCOLEMAK\nDVORAKPrg"
 
 # Use rofi to choose layout
 chosen=$(echo -e "$options" | rofi -dmenu -p "Select Keyboard Layout:" -theme demnu)
@@ -18,10 +18,18 @@ QWERTY)
 DVORAK)
     setxkbmap us -variant dvorak
     notify-send "Keyboard layout: DVORAK"
+    pix ~/Pictures/dvorakprg.png
     ;;
+DVORAKPrg)
+    setxkbmap us -variant dvp
+    notify-send "Keyboard layout: DVORAKPrg"
+    pix ~/Pictures/dvorakprg.png &
+    ;;
+
 COLEMAK)
     setxkbmap us -variant colemak
     notify-send "Keyboard layout: COLEMAK"
+    pix ~/Pictures/colemak.png &
     ;;
 *)
     notify-send "No layout selected"
