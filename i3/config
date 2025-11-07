@@ -108,7 +108,7 @@ bindsym $mod+e layout toggle split
 bindsym $mod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
+# bindsym $mod+space focus mode_toggle
 
 # focus the parent container
 bindsym $mod+a focus parent
@@ -188,8 +188,10 @@ bindsym $mod+r mode "resize"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        position top
-        status_command i3status
+    position top
+    status_command i3status
+    tray_output none
+    # status_command i3blocks
 }
 
 # colors
@@ -206,7 +208,12 @@ client.background       #ffffff
 assign [class="Telegram"] 10
 assign [class="zen"] 2
 assign [class="vlc"] 4
+assign [class="Nemo"] 4
 assign [class="dev.zed.Zed"] 3
+
+# no focus
+no_focus [class="zen"]
+no_focus [class="Telegram"]
 
 # Floating
 for_window [class="cinnamon-settings network"] floating enable
@@ -217,8 +224,6 @@ new_float  pixel 2
 
 # Autostart
 exec_always --no-startup-id ~/.config/i3/autostart.sh
-# exec --no-startup-id ~/.local/bin/autostart.sh
-# exec --no-startup-id nitrogen --restore
 
 # Keybinds
 
@@ -254,9 +259,9 @@ bindsym Menu exec ~/.local/bin/rofi-clipboard
 # Wifi
 bindsym $mod+Shift+w exec cinnamon-settings network
 
-# Scratchpad terminal
-for_window [class="scratchpad"] floating enable, move scratchpad, resize set 1200 700, move position center
-bindsym $mod+Shift+Return exec --no-startup-id alacritty --class=scratchpad
-bindsym $mod+Shift+slash move scratchpad
-bindsym $mod+slash scratchpad show
-exec --no-startup-id alacritty --class=scratchpad
+# Focus on window activation
+focus_on_window_activation focus
+
+# focus prev
+bindsym $mod+space focus prev
+

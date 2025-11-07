@@ -18,34 +18,48 @@ if [ ! -f "$FILE" ]; then
     exit 1
 fi
 
+DIR=$(dirname "$FILE")
 EXT="${FILE##*.}"
 BASENAME="${FILE%.*}"
 CLASSNAME=$(basename "$BASENAME")
 
-echo " "
-echo -e "${GREEN}=== OUTPUT ${FILE} ===${RESET}"
+if [ -f "$DIR/Makefile" ] || [ -f "$DIR/makefile" ]; then
+    echo -e "${YELLOW}Makefile detected. Running make...${RESET}"
+    (cd "$DIR" && make)
+    echo " "
+    echo -e "${GREEN}=== OUTPUT (from Makefile) ===${RESET}"
+    (cd "$DIR" && ./$(basename "$BASENAME") 2>/dev/null || true)
+    exit $?
+fi
 
 case "$EXT" in
 py)
-    python3 "$FILE"
+    CMD=("python3" "$FILE")
     ;;
 java)
-    javac "$FILE" && java "$CLASSNAME"
+    CMD=("bash" -c "javac \"$FILE\" && java \"$CLASSNAME\"")
     ;;
 c)
-    gcc "$FILE" -o "$BASENAME" && "$BASENAME"
+    C_DIR=$(dirname "$FILE")
+    C_BASE=$(basename "$FILE" .c)
+    CMD=("bash" -c "gcc \"$FILE\" -o \"$C_DIR/$C_BASE\" && \"$C_DIR/$C_BASE\"")
+    # CMD=("bash" -c "gcc \"$FILE\" -o \"$BASENAME\" && ./\"$BASENAME\"")
+    # CMD=("sh" -c "gcc \"$FILE\" -o \"$BASENAME\" -lncurses && \"$BASENAME\"")
     ;;
 cpp)
-    g++ "$FILE" -o "$BASENAME" && "$BASENAME"
+    CPP_DIR=$(dirname "$FILE")
+    CPP_BASE=$(basename "$FILE" .cpp)
+    CMD=("bash" -c "g++ \"$FILE\" -o \"$CPP_DIR/$CPP_BASE\" && \"$CPP_DIR/$CPP_BASE\"")
+    # CMD=("bash" -c "g++ \"$FILE\" -o \"$BASENAME\" && ./\"$BASENAME\"")
     ;;
 sh)
-    bash "$FILE"
+    CMD=("bash" "$FILE")
     ;;
 lua)
-    lua "$FILE"
+    CMD=("lua" "$FILE")
     ;;
 js)
-    node "$FILE"
+    CMD=("node" "$FILE")
     ;;
 *)
     echo -e "${RED}Error:${RESET} Unsupported file type: $EXT"
@@ -53,6 +67,10 @@ js)
     ;;
 esac
 
+echo " "
+echo -e "${GREEN}=== OUTPUT ${FILE} ===${RESET}"
+# Run interactively (keeps stdin open)
+"${CMD[@]}"
 EXIT_CODE=$?
 
 if [ $EXIT_CODE -ne 0 ]; then

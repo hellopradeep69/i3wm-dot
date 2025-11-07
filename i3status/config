@@ -11,7 +11,7 @@ general {
         interval = 2
 }
 
-order += "memory"
+order += "read_file dum"
 order += "read_file bat"
 order += "disk /"
 order += "volume master"
@@ -41,7 +41,7 @@ battery all {
         status_bat = "BAT"
         path = "/sys/class/power_supply/BAT%d/uevent"
         threshold_type = "percentage"
-        low_threshold = 40
+        low_threshold = 24
 }
 
 disk "/" {
@@ -59,7 +59,7 @@ memory {
 }
 
 tztime local {
-        format = "%d-%m %a|%I:%M %p"
+        format = " %d-%m %a | %I:%M %p "
 }
 
 volume master {
@@ -72,10 +72,15 @@ volume master {
 
 read_file brightness {
         path=/sys/class/backlight/amdgpu_bl1/brightness
-        format=" %content %"
+        format=" %content %  "
 }
 
 read_file bat {
         path=/sys/class/power_supply/BAT1/capacity
         format=" %title: %content"
+}
+
+read_file dum {
+        path=/home/hellopradeep/.config/i3status/dummy.txt
+        format=" %content"
 }

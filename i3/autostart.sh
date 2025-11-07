@@ -12,7 +12,7 @@ dunst &
 # Start compositor
 picom &
 
-# feh --bg-fill ~/Pictures/Wallpapers/space.jpg &
+# feh --bg-fill ~/Pictures/Wallpapers/maybe.jpg &
 # nitrogen --restore &
 
 # Custom scripts

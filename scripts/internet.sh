@@ -43,7 +43,7 @@ c) url="https://chat.openai.com/?q=$query" ;;
 d) url="https://duckduckgo.com/?q=$query" ;;
 f) qtile cmd-obj -o window -f toggle_fullscreen ;; # toggle fullscreen
 g) url="https://github.com/search?q=$query" ;;
-r) url="https://reddit.com/r/$query" ;;
+r) url="https://www.reddit.com/r/$query" ;;
 w) url="https://en.wikipedia.org/wiki/$query" ;;
 y) url="https://www.youtube.com/results?search_query=$query" ;;
 x) qtile cmd-obj -o window -f kill ;; # close focused window
