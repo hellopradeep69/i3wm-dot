@@ -26,12 +26,11 @@ PANE_CACHE_FILE="$PANE_CACHE_DIR/panes.cache"
 # how to use:
 # tmux-sessionizer -w 0 will execute the first command in window -t 69.
 # TS_SESSION_COMMANDS=(<cmd1> <cmd2>)
+TS_SESSION_COMMANDS=("htop" "cmatrix" "python3")
 #
 # TS_LOG=true # will write logs to ~/.local/share/tmux-sessionizer/tmux-sessionizer.logs
 # TS_LOG_FILE=<file> # will write logs to <file> Defaults to ~/.local/share/tmux-sessionizer/tmux-sessionizer.logs
 # ------------------------
-
-TS_SESSION_COMMANDS=("btop" "nvim ~/projects" "cmatrix")
 
 if [[ -f "$CONFIG_FILE" ]]; then
     source "$CONFIG_FILE"
@@ -244,8 +243,7 @@ find_dirs() {
             path="$entry"
         fi
 
-        [[ -d "$path" ]] && find ~ -mindepth 1 -maxdepth 3 -type d -not -path '*/\.git*'
-        # [[ -d "$path" ]] && find "$path" -mindepth 1 -maxdepth 3 "${depth:-${TS_MAX_DEPTH:-1}}" -path '*/.git' -prune -o -type d -print
+        [[ -d "$path" ]] && find "$path" -mindepth 1 -maxdepth "${depth:-${TS_MAX_DEPTH:-1}}" -path '*/.git' -prune -o -type d -print
     done
 }
 
@@ -321,12 +319,7 @@ if [[ ! -z $session_cmd ]]; then
 elif [[ ! -z $user_selected ]]; then
     selected="$user_selected"
 else
-    selected=$(find_dirs | fzf \
-        --prompt="Select tmux item (q to quit): " \
-        --border \
-        --reverse \
-        --bind "j:down,k:up,q:abort" \
-        --cycle)
+    selected=$(find_dirs | fzf)
 fi
 
 if [[ -z $selected ]]; then

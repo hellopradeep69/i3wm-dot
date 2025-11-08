@@ -192,14 +192,26 @@ bar {
     status_command i3status
     tray_output none
     # status_command i3blocks
+    colors {
+        background #000000
+        statusline #ffffff
+        separator #666666
+
+        # <colorclass> <border> <background> <text>
+        focused_workspace  #555555 #444444 #ffffff
+        active_workspace   #333333 #5f676a #ffffff
+        inactive_workspace #333333 #222222 #888888
+        urgent_workspace   #2f343a #222222 #ffffff
+        binding_mode       #2f343a #222222 #ffffff
+    }
 }
 
 # colors
 # class                 border  backgr. text    indicator child_border
-client.focused          #979186 #7f7a71 #ffffff #2e9ef4   #68645c
+client.focused          #979186 #7f7a71 #ffffff #282828   #68645c
 client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
 client.unfocused        #333333 #222222 #888888 #292d2e   #222222
-client.urgent           #2f343a #900000 #ffffff #900000   #900000
+client.urgent           #2f343a #222222 #ffffff #222222   #222222
 client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 
 client.background       #ffffff
@@ -264,4 +276,3 @@ focus_on_window_activation focus
 
 # focus prev
 bindsym $mod+space focus prev
-

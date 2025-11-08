@@ -1,7 +1,2 @@
-hi(
-    name.append(),
-    age.append(),
-    mine.append(),
-    gender.append(),
-    symbol.append(),
-)
+#!/usr/bin/env bash
+awk '{print int($1/3600)"h "int(($1%3600)/60)"m"}' /proc/uptime

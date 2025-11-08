@@ -8,12 +8,16 @@
 
 general {
         colors = true
+        # color_good = '#88b090'
+        color_good="#00cc00"
         interval = 2
 }
 
+order += "read_file uptime"
 order += "read_file dum"
+order += "memory"
 order += "read_file bat"
-order += "disk /"
+# order += "disk /"
 order += "volume master"
 order += "battery all"
 order += "wireless _first_"
@@ -54,6 +58,8 @@ load {
 
 memory {
         format = "%used"
+        unit = Mi
+        decimals = 3
         threshold_degraded = "1G"
         format_degraded = "MEMORY < %available"
 }
@@ -84,3 +90,10 @@ read_file dum {
         path=/home/hellopradeep/.config/i3status/dummy.txt
         format=" %content"
 }
+
+read_file uptime {
+        path = "/proc/uptime"
+        format=" %content"
+        color_good="#ffffff"
+}
+
