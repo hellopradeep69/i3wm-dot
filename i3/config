@@ -193,16 +193,12 @@ bar {
     tray_output none
     # status_command i3blocks
     colors {
-        background #000000
-        statusline #ffffff
-        separator #666666
-
-        # <colorclass> <border> <background> <text>
+        # <colorclass>    <border> <background> <text>
         focused_workspace  #555555 #444444 #ffffff
         active_workspace   #333333 #5f676a #ffffff
         inactive_workspace #333333 #222222 #888888
         urgent_workspace   #2f343a #222222 #ffffff
-        binding_mode       #2f343a #222222 #ffffff
+        binding_mode       #000000 #000000 #ffffff
     }
 }
 

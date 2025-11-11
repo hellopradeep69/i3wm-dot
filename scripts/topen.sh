@@ -53,7 +53,7 @@ code_start() {
 exclude_dir() {
     EXCLUDE_DIRS=(~/.tmux ~/Templates ~/.cache ~/.rustup ~/.npm ~/.zen ~/.linuxmint
         ~/Public ~/.icons ~/Desktop ~/.cargo ~/.mozilla ~/.themes ~/.w3m ~/.golf
-        ~/.java ~/.cursor ~/fastfetch ~/Telegram ~/.fzf ~/.dbus ~/Dot-conf/* ~/.pki)
+        ~/.java ~/.cursor ~/fastfetch ~/Telegram ~/.fzf ~/.dbus ~/Dot-conf/* ~/.pki ~/Music/*)
 
     exclude_args=""
     for d in "${EXCLUDE_DIRS[@]}"; do

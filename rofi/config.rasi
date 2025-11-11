@@ -180,4 +180,6 @@ configuration {
 //@theme "/home/hellopradeep/.config/rofi/themes/bw.rasi"
 //@theme "/home/hellopradeep/.config/rofi/themes/spot2.rasi"
 //@theme "/home/hellopradeep/.config/rofi/themes/spot.rasi"
+//@theme "/home/hellopradeep/.config/rofi/themes/bw.rasi"
+//@theme "/usr/share/rofi/themes/gruvbox-dark-hard.rasi"
 @theme "/home/hellopradeep/.config/rofi/themes/bw.rasi"
