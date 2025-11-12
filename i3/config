@@ -272,3 +272,6 @@ focus_on_window_activation focus
 
 # focus prev
 bindsym $mod+space focus prev
+
+# internet
+bindsym Mod1+space exec ~/.local/bin/internet.sh
