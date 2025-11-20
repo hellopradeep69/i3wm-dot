@@ -157,6 +157,7 @@ alias :q="exit"
 alias lh="ls -a"
 alias lvim="NVIM_APPNAME=Lazyvimed nvim"
 alias nvchad="NVIM_APPNAME=nvchad nvim"
+alias nv="NVIM_APPNAME=Hellonvim nvim"
 
 # fzf 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
