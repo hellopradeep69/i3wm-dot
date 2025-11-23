@@ -8,26 +8,26 @@ WM=$(echo "$XDG_CURRENT_DESKTOP $DESKTOP_SESSION $XDG_SESSION_DESKTOP $WINDOW_MA
 
 case "$action" in
 Lock)
-    i3lock -c 282a36
-    ;;
+  i3lock -c 282a36
+  ;;
 Suspend)
-    i3lock -c 282a36 && systemctl suspend
-    ;;
+  i3lock -c 282a36 && systemctl suspend
+  ;;
 Logout)
-    if [[ $WM == *i3* ]]; then
-        i3-msg exit
-    elif [[ $WM == *bspwm* ]]; then
-        bspc quit
-    elif [[ $WM == *qtile* ]]; then
-        qtile cmd-obj -o root -f shutdown
-    else
-        echo "Unknown WM. Cannot logout." | rofi -dmenu -p "Error"
-    fi
-    ;;
+  if [[ $WM == *i3* ]]; then
+    i3-msg exit
+  elif [[ $WM == *bspwm* ]]; then
+    bspc quit
+  elif [[ $WM == *qtile* ]]; then
+    qtile cmd-obj -o root -f shutdown
+  else
+    echo "Unknown WM. Cannot logout." | rofi -dmenu -p "Error"
+  fi
+  ;;
 Reboot)
-    systemctl reboot
-    ;;
+  systemctl reboot
+  ;;
 Poweroff)
-    systemctl poweroff
-    ;;
+  systemctl poweroff
+  ;;
 esac

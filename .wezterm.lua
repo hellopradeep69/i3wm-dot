@@ -33,6 +33,7 @@ return {
 
 	-- Window appearance
 	window_decorations = "RESIZE", -- Only border, no title bar
+	window_background_opacity = 0.0,
 
 	-- Optional: Window padding for better spacing (currently commented out)
 	-- window_padding = {
@@ -42,7 +43,7 @@ return {
 	--   bottom = 2,
 	-- },
 
-	-- Dim inactive panes (useful in split layouts)
+	-- Dim inactive panes (useful in split layouts) | ok
 	inactive_pane_hsb = {
 		saturation = 0.9,
 		brightness = 0.8,

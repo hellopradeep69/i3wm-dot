@@ -61,7 +61,7 @@ memory {
         unit = Mi
         decimals = 3
         threshold_degraded = "1G"
-        format_degraded = "MEMORY < %available"
+        format_degraded = "%available"
 }
 
 tztime local {

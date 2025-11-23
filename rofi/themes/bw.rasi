@@ -26,7 +26,8 @@
   spacing: 0;
   background-color: transparent;
 
-    font: "JetBrainsMono Nerd Font 15";
+    // font: "JetBrainsMono Nerd Font 15";
+    font: "Terminess Nerd Font Mono 15";
   text-color: @text;
 }
 
