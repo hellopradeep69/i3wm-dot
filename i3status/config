@@ -13,11 +13,11 @@ general {
         interval = 2
 }
 
+# order += "disk /"
 order += "read_file uptime"
 order += "read_file dum"
 order += "memory"
 order += "read_file bat"
-# order += "disk /"
 order += "volume master"
 order += "battery all"
 order += "wireless _first_"
