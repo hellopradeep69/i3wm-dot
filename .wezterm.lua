@@ -20,7 +20,6 @@ return {
 	-- font = wezterm.font("3270 Nerd Font Mono"),
 	-- font = wezterm.font("Terminess Nerd Font Mono"),
 	font_size = 12.0,
-	-- font_size = 15.0,
 
 	-- Tab bar behavior and appearance
 	enable_tab_bar = true,
@@ -77,14 +76,5 @@ return {
 				mods = "CTRL",
 			}),
 		},
-		-- ctrl J to send ctrl c
-		-- {
-		-- 	key = "j",
-		-- 	mods = "CTRL",
-		-- 	action = wezterm.action.SendKey({
-		-- 		key = "c",
-		-- 		mods = "CTRL",
-		-- 	}),
-		-- },
 	},
 }

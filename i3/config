@@ -54,6 +54,7 @@ tiling_drag modifier titlebar
 
 # start a terminal
 # bindsym $mod+Return exec alacritty
+# bindsym $mod+Return exec ghostty
 bindsym $mod+Return exec wezterm
 
 # start dmenu (a program launcher)
@@ -78,10 +79,10 @@ bindsym $mod+k focus up
 bindsym $mod+l focus right
 
 # alternatively, you can use the cursor keys:
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
-bindsym $mod+Right focus right
+# bindsym $mod+Left focus left
+# bindsym $mod+Down focus down
+# bindsym $mod+Up focus up
+# bindsym $mod+Right focus right
 
 # move focused window
 bindsym $mod+Shift+h move left
@@ -297,8 +298,9 @@ bindsym Print exec gnome-screenshot
 # Screenshot 2
 bindsym Shift+Print exec gnome-screenshot -a
 
-# scratchpad
-exec --no-startup-id alacritty --class scratchpad
-for_window [class="scratchpad"] floating enable, move position center, resize set 70 ppt 70 ppt
-for_window [class="scratchpad"] move scratchpad
-bindsym $mod+slash scratchpad show
+# # scratchpad
+# exec --no-startup-id alacritty --class scratchpad
+# for_window [class="scratchpad"] floating enable, move position center, resize set 70 ppt 70 ppt
+# for_window [class="scratchpad"] move scratchpad
+# bindsym $mod+slash scratchpad show
+

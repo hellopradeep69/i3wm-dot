@@ -8,6 +8,13 @@ removeit() {
     rm "$cache" && rm "$crop"
 }
 
+Check_yt() {
+    if ! command -v yt-dlp &>/dev/null; then
+        echo "yt-dlp could not be found"
+        exit 10
+    fi
+}
+
 title() {
     echo " "
     echo "░██     ░██    ░██           ░██                                         "
@@ -61,6 +68,7 @@ not_properly() {
     notify-send "Invalid" "Try again"
 }
 
+Check_yt
 title
 get_info
 
@@ -104,8 +112,8 @@ elif [[ "$option" = "Q" ]]; then
 else
     echo " "
     echo "=== === === === === === === === === === === === ==="
-    echo "1.ONLY AUDIO(type 1.)"
-    echo "2.ONLY VIDEO & AUDIO(type 2.)"
+    echo "1.ONLY AUDIO(type 1)"
+    echo "2.ONLY VIDEO & AUDIO(type 2)"
     echo "=== === === === === === === === === === === === ==="
     read -r submenu
     if [[ "$submenu" != "2" ]]; then
