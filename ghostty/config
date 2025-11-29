@@ -1,0 +1,29 @@
+# This is the configuration file for Ghostty.
+
+# config
+window-decoration = none
+# window-decoration = auto
+window-padding-x = 12
+window-padding-y = 10
+font-family = JetBrainsMono Nerd Font
+confirm-close-surface=false 
+fullscreen = true
+
+# cursor
+cursor-style = block
+cursor-style-blink = false
+shell-integration-features = no-cursor
+
+# Theme
+# background-opacity = 0.0
+theme = Gruvbox Dark Hard
+background = #000000
+
+# Keybind
+keybind = ctrl+shift+c=text:\x03
+keybind = ctrl+c=copy_to_clipboard
+keybind = ctrl+v=paste_from_clipboard
+
+# Shader
+custom-shader = shaders/cursor_warp.glsl
+# custom-shader = shaders/cursor_tail.glsl
