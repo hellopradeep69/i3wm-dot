@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Clipboard
+Comment=Show clipboard history
+Exec=/home/hellopradeep/.local/bin/rofi-clipboard
+Icon=edit-paste
+Terminal=false
+Type=Application
+Categories=Utility;
