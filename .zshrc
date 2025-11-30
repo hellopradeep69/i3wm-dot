@@ -128,8 +128,8 @@ export FZF_DEFAULT_OPTS='--bind j:down,k:up,q:abort --border --cycle'
 # keybindings
 bindkey -M viins '^e' edit-command-line
 bindkey -M vicmd '^e' edit-command-line
-bindkey -e -r '^[x'
-bindkey -a -r ':'
+# bindkey -e -r '^[x'
+# bindkey -a -r ':'
 
 #  Enable vi keybindings + jj to escape
 bindkey -v
