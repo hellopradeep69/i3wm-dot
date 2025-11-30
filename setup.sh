@@ -31,6 +31,18 @@ Copy_dir() {
     done
 }
 
+Copy_desk() {
+    echo "Copying .desktop files to ~/.local/share/applications"
+    mkdir -p "$HOME/.local/share/applications"
+
+    if [ -d "$REPO_DIR/desktop" ]; then
+        cp -r "$REPO_DIR/desktop"/. "$HOME/.local/share/applications/"
+        echo "Desktop entries copied."
+    else
+        echo "No 'desktop' folder found in repo."
+    fi
+}
+
 Install_pack() {
     if command -v apt &>/dev/null; then
         sudo apt update
