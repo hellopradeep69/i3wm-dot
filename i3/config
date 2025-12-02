@@ -233,7 +233,7 @@ assign [class="Nemo"] 4
 assign [class="dev.zed.Zed"] 3
 
 # no focus
-no_focus [class="zen"]
+no_focus [class="dev.zed.Zed"]
 no_focus [class="Telegram"]
 
 # Floating
@@ -241,6 +241,10 @@ for_window [class="cinnamon-settings network"] floating enable
 for_window [class="com.mitchellh.ghostty"] border pixel 1
 for_window [class="Gnome-screenshot"] floating enable
 for_window [class="main"] floating enable
+
+# For window | workspace
+for_window [workspace="5"] layout tabbed
+for_window [workspace="10"] layout tabbed
 
 #no title bar
 new_window pixel 1
@@ -303,4 +307,5 @@ bindsym Shift+Print exec gnome-screenshot -a
 # for_window [class="scratchpad"] floating enable, move position center, resize set 70 ppt 70 ppt
 # for_window [class="scratchpad"] move scratchpad
 # bindsym $mod+slash scratchpad show
+
 

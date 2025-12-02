@@ -1,5 +1,6 @@
 # i3wm
 
+
 ---
 
 ### Installation

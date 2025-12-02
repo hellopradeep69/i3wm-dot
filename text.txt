@@ -1,0 +1,12 @@
+cp -r ~/.config/i3/* ~/i3wm/i3/
+cp -r ~/.config/i3status/* ~/i3wm/i3status/
+cp -r ~/.config/rofi/* ~/i3wm/rofi/
+cp -r ~/.config/picom/* ~/i3wm/picom/
+cp -r ~/.config/ghostty/* ~/i3wm/ghostty/
+cp -r ~/.config/dunst/* ~/i3wm/dunst/
+cp -r ~/.local/bin/* ~/i3wm/scripts/
+cp -r ~/.config/fastfetch/* ~/i3wm/fastfetch/
+cp -r ~/.config/zathura/* ~/i3wm/zathura/
+cp ~/.wezterm.lua ~/i3wm/
+cp ~/.tmux.conf ~/i3wm/
+cp ~/.zshrc ~/i3wm/
